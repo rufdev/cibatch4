@@ -70,7 +70,26 @@ class AuthorController extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $author = new \App\Models\Author();
+        $data = $this->request->getJSON();
+        unset($data->id);
+
+        if (!$author->validate($data)){
+            $response = array(
+                'status' => 'error',
+                'error' => $author->errors()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+        }
+
+        $author->update($id,$data);
+        $response = array(
+            'status' => 'success',
+            'message' => 'Author updated successfully'
+        );
+        
+        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
     }
 
     /**
