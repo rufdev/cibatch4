@@ -23,7 +23,13 @@ class AuthorController extends ResourceController
      */
     public function show($id = null)
     {
-        //
+            $author = new \App\Models\Author();
+            $data = $author->find($id);
+            if (!$data){
+                return $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
+            }
+
+            return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($data);
     }
 
 
