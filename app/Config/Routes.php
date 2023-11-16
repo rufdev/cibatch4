@@ -8,3 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 $routes->get('dashboard','DashboardController::index');
+
+$routes->resource('authors',['controller' => 'AuthorsController', 'except' => ['new','edit']]);
+
+
+
+service('auth')->routes($routes);

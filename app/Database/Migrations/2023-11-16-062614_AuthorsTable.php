@@ -33,6 +33,11 @@ class AuthorsTable extends Migration
                 'type' => 'DATE',
                 'null' => false
             ],
+            'is_active' => [
+                'type' => 'BOOLEAN',
+                'null' => false,
+                'default' => true
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true
@@ -50,6 +55,7 @@ class AuthorsTable extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('authors');
+        $this->forge->dropTable('authors',true);
+     
     }
 }
