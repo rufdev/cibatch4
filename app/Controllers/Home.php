@@ -8,8 +8,8 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        $db = \Config\Database::connect();
-        $builder = $db->table('authors');
+        // $db = \Config\Database::connect();
+        // $builder = $db->table('authors');
 
         // $query = $builder->get(); //SELECT * FROM authors;
 
@@ -139,7 +139,7 @@ class Home extends BaseController
 
 
         // $authors = $query->getResult();
-
+            
         // return json_encode($authors);
 
         return view('welcome_message');
