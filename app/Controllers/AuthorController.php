@@ -99,6 +99,21 @@ class AuthorController extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        $author = new \App\Models\Author();
+        
+        if ($author->delete($id)){
+            $response = array(
+                'status' => 'success',
+                'message' => 'Author deleted successfully'
+            );
+            
+            return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+        }
+
+        $response = array(
+            'status' => 'error',
+            'message' => 'Author not found'
+        );
+        return $this->response->setStatusCode(Response::HTTP_NOT_FOUND)->setJSON($response);
     }
 }
