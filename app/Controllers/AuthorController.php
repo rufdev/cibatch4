@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-
+use CodeIgniter\HTTP\Response;
 class AuthorController extends ResourceController
 {
     /**
@@ -26,15 +26,6 @@ class AuthorController extends ResourceController
         //
     }
 
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
-    public function new()
-    {
-        //
-    }
 
     /**
      * Create a new resource object, from "posted" parameters
@@ -43,18 +34,28 @@ class AuthorController extends ResourceController
      */
     public function create()
     {
-        //
+        $author = new \App\Models\Author();
+        $data = $this->request->getPost();
+
+        if (!$author->validate($data)){
+            $response = array(
+                'status' => 'error',
+                'error' => $author->errors()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+        }
+
+        $author->insert($data);
+        $response = array(
+            'status' => 'success',
+            'message' => 'Author created successfully'
+        );
+        
+        return $this->response->setStatusCode(Response::HTTP_CREATED)->setJSON($response);
+
     }
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
-    {
-        //
-    }
 
     /**
      * Add or update a model resource, from "posted" properties
