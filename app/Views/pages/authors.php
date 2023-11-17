@@ -115,6 +115,12 @@
 
 <?= $this->section('pagescripts'); ?>
 <script>
+    $(function(){
+        $("#birthdatepicker").datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+    });
+
     let table = $("#dataTable").DataTable({
         responsive: true,
         processing: true,
