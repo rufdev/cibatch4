@@ -9,6 +9,8 @@ $routes->get('/', 'Home::index');
 
 $routes->get('dashboard','DashboardController::index');
 
+$routes->post('authors/list','AuthorController::list');
+
 $routes->resource('authors',['controller' => 'AuthorController', 'except' => ['new','edit']]);
 $routes->resource('posts',['controller' => 'PostController', 'except' => ['new','edit']]);
 
