@@ -50,6 +50,7 @@
                             <form class="needs-validation" novalidate>
                                 <div class="card-body">
                                     <div class="form-group">
+                                        <input type="hidden" id="id" name="id">
                                         <label for="first_name">First Name</label>
                                         <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
                                         <div class="valid-feedback">
@@ -134,28 +135,65 @@
             // }
 
             if (this.checkValidity()) {
-                //create
-                $.ajax({
-                    url: "<?= base_url('authors'); ?>",
-                    type: "POST",
+                if (!formdata.id) {
+                    $.ajax({
+                        url: "<?= base_url('authors'); ?>",
+                        type: "POST",
+                        data: jsondata,
+                        success: function(response) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                body: response.message,
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $("#modalID").modal('hide');
+                            table.ajax.reload();
+                        },
+                        error: function(response) {
+                            let parsedresponse = JSON.parse(response.responseText);
+
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                body: JSON.stringify(parsedresponse.error),
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                } else {
+                    $.ajax({
+                    url: "<?= base_url('authors'); ?>/" + formdata.id,
+                    type: "PUT",
                     data: jsondata,
                     success: function(response) {
                         $(document).Toasts('create', {
                             class: 'bg-success',
                             title: 'Success',
-                            body: response.message
+                            body: response.message,
+                            autohide: true,
+                            delay: 3000
                         });
                         $("#modalID").modal('hide');
                         table.ajax.reload();
                     },
                     error: function(response) {
+                        let parsedresponse = JSON.parse(response.responseText);
+
                         $(document).Toasts('create', {
                             class: 'bg-danger',
                             title: 'Error',
-                            body: response.message
+                            body: JSON.stringify(parsedresponse.error),
+                            autohide: true,
+                            delay: 3000
                         });
                     }
                 });
+                }
+
+
             }
 
 
@@ -193,8 +231,8 @@
             {
                 data: "",
                 defaultContent: `<td>
-                <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                <button class="btn btn-danger btn-sm btn-delete">Delete</button>
+                <button class="btn btn-warning btn-sm btn-edit" id="editRow">Edit</button>
+                <button class="btn btn-danger btn-sm btn-delete" id="deleteRow">Delete</button>
                 </td>`
 
             }
@@ -206,6 +244,33 @@
         ordering: true,
         info: true,
         autoWidth: false
+    });
+
+    $(document).on('click', "#editRow", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        $.ajax({
+            url: "<?= base_url('authors'); ?>/" + id,
+            type: "GET",
+            success: function(response) {
+                $("#modalID").modal('show');
+                $("#id").val(response.id);
+                $("#first_name").val(response.first_name);
+                $("#last_name").val(response.last_name);
+                $("#email").val(response.email);
+                $("#birthdate").val(response.birthdate);
+            },
+            error: function(response) {
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Error',
+                    body: "Record Not Found",
+                    autohide: true,
+                    delay: 3000
+                });
+            }
+        });
     });
 
     $(document).ready(function() {
