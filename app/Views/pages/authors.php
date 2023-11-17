@@ -149,6 +149,7 @@
                                 delay: 3000
                             });
                             $("#modalID").modal('hide');
+                            clearform();
                             table.ajax.reload();
                         },
                         error: function(response) {
@@ -165,44 +166,36 @@
                     });
                 } else {
                     $.ajax({
-                    url: "<?= base_url('authors'); ?>/" + formdata.id,
-                    type: "PUT",
-                    data: jsondata,
-                    success: function(response) {
-                        $(document).Toasts('create', {
-                            class: 'bg-success',
-                            title: 'Success',
-                            body: response.message,
-                            autohide: true,
-                            delay: 3000
-                        });
-                        $("#modalID").modal('hide');
-                        table.ajax.reload();
-                    },
-                    error: function(response) {
-                        let parsedresponse = JSON.parse(response.responseText);
+                        url: "<?= base_url('authors'); ?>/" + formdata.id,
+                        type: "PUT",
+                        data: jsondata,
+                        success: function(response) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                body: response.message,
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $("#modalID").modal('hide');
+                            clearform();
+                            table.ajax.reload();
+                        },
+                        error: function(response) {
+                            let parsedresponse = JSON.parse(response.responseText);
 
-                        $(document).Toasts('create', {
-                            class: 'bg-danger',
-                            title: 'Error',
-                            body: JSON.stringify(parsedresponse.error),
-                            autohide: true,
-                            delay: 3000
-                        });
-                    }
-                });
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                body: JSON.stringify(parsedresponse.error),
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
                 }
-
-
             }
-
-
-
         });
-
-
-
-
     });
 
     let table = $("#dataTable").DataTable({
@@ -250,11 +243,11 @@
         let row = $(this).parents("tr")[0];
         let id = table.row(row).data().id;
 
-        if (confirm("Are you sure you want to delete this record?")){
+        if (confirm("Are you sure you want to delete this record?")) {
             $.ajax({
                 url: "<?= base_url('authors'); ?>/" + id,
                 type: "DELETE",
-                success : function(response){
+                success: function(response) {
                     $(document).Toasts('create', {
                         class: 'bg-success',
                         title: 'Success',
@@ -264,7 +257,7 @@
                     });
                     table.ajax.reload();
                 },
-                error: function (response){
+                error: function(response) {
                     $(document).Toasts('create', {
                         class: 'bg-danger',
                         title: 'Error',
@@ -319,5 +312,13 @@
             });
         });
     });
+    function clearform(){
+        $("#id").val("");
+        $("#first_name").val("");
+        $("#last_name").val("");
+        $("#email").val("");
+        $("#birthdate").val("");
+    
+    }
 </script>
 <?= $this->endSection(); ?>
