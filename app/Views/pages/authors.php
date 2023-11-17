@@ -246,7 +246,7 @@
         autoWidth: false
     });
 
-    $(document).on('click', "#deletRow", function() {
+    $(document).on('click', "#deleteRow", function() {
         let row = $(this).parents("tr")[0];
         let id = table.row(row).data().id;
 
