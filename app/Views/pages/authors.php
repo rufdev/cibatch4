@@ -115,10 +115,56 @@
 
 <?= $this->section('pagescripts'); ?>
 <script>
-    $(function(){
+    $(function() {
         $("#birthdatepicker").datetimepicker({
             format: 'YYYY-MM-DD'
         });
+
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            let formdata = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+
+            let jsondata = JSON.stringify(formdata);
+            // {
+            //     "first_name":"valuse"...
+            // }
+
+            if (this.checkValidity()) {
+                //create
+                $.ajax({
+                    url: "<?= base_url('authors'); ?>",
+                    type: "POST",
+                    data: jsondata,
+                    success: function(response) {
+                        $(document).Toasts('create', {
+                            class: 'bg-success',
+                            title: 'Success',
+                            body: response.message
+                        });
+                        $("#modalID").modal('hide');
+                        table.ajax.reload();
+                    },
+                    error: function(response) {
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Error',
+                            body: response.message
+                        });
+                    }
+                });
+            }
+
+
+
+        });
+
+
+
+
     });
 
     let table = $("#dataTable").DataTable({
@@ -160,6 +206,22 @@
         ordering: true,
         info: true,
         autoWidth: false
+    });
+
+    $(document).ready(function() {
+        'use strict';
+
+        let form = $('.needs-validation');
+
+        form.each(function() {
+            $(this).on('submit', function(e) {
+                if (this.checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        });
     });
 </script>
 <?= $this->endSection(); ?>
