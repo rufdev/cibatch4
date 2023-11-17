@@ -4,9 +4,9 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <!-- <div class="preloader flex-column justify-content-center align-items-center">
             <h1>CI DEMO</h1>
-        </div>
+        </div> -->
 
         <?php include 'menu.php'; ?>
 
