@@ -246,6 +246,37 @@
         autoWidth: false
     });
 
+    $(document).on('click', "#deletRow", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        if (confirm("Are you sure you want to delete this record?")){
+            $.ajax({
+                url: "<?= base_url('authors'); ?>/" + id,
+                type: "DELETE",
+                success : function(response){
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Success',
+                        body: response.message,
+                        autohide: true,
+                        delay: 3000
+                    });
+                    table.ajax.reload();
+                },
+                error: function (response){
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        body: "Record Not Found",
+                        autohide: true,
+                        delay: 3000
+                    });
+                }
+            });
+        }
+    });
+
     $(document).on('click', "#editRow", function() {
         let row = $(this).parents("tr")[0];
         let id = table.row(row).data().id;
