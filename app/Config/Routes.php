@@ -9,7 +9,8 @@ $routes->get('/', 'Home::index');
 
 $routes->get('dashboard','DashboardController::index');
 
-$routes->resource('authors',['controller' => 'AuthorController', 'except' => ['new','edit'], 'filter'=> 'groupfilter:admin']);
+$routes->resource('authors',['controller' => 'AuthorController', 'except' => ['new','edit']]);
+$routes->resource('posts',['controller' => 'PostController', 'except' => ['new','edit']]);
 
 
 
