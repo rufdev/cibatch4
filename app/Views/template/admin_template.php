@@ -11,7 +11,7 @@
         <?php include 'menu.php'; ?>
 
         <div class="content-wrapper">
-
+            <?= $this->renderSection('contentarea'); ?>
         </div>
 
         <?php include 'footer.php'; ?>
